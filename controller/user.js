@@ -33,6 +33,23 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
+const updateProfile = asyncHandler(async (req, res) => {
+  const newUserData = {
+    name: req.body.name,
+    email: req.body.email,
+  };
+  //we add cloudinary letter then we are giving a condition that if the user has uploaded a new image then we will update the image avatar
+
+  const user = await User.findByIdAndUpdate(req.user.id, newUserData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+  res.status(200).json({
+    success: true,
+  });
+});
+
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -128,4 +145,5 @@ module.exports = {
   getUserProfile,
   logoutUser,
   getUserDetails,
+  updateProfile,
 };

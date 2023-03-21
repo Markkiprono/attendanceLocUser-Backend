@@ -10,6 +10,7 @@ const {
   viewEmployeeLocation,
   getUserProfile,
   logoutUser,
+  updateProfile,
   getUserDetails,
 } = require("../controller/user");
 const {
@@ -19,7 +20,7 @@ const {
 
 router
   .route("/new")
-  .post(isAuthenticatedUser, authorizeRoles("hr"), registerUser);
+  .post(isAuthenticatedUser, authorizeRoles("admin"), registerUser);
 router.route("/login").post(loginUser);
 router.route("/").get(isAuthenticatedUser, authorizeRoles("admin"), queryUsers);
 router
@@ -32,7 +33,10 @@ router
 router
   .route("/location/:id")
   .get(isAuthenticatedUser, authorizeRoles("admin"), viewEmployeeLocation);
-router.route("/employee").get(isAuthenticatedUser, getUserProfile);
+router
+  .route("/employee")
+  .get(isAuthenticatedUser, getUserProfile)
+  .put(isAuthenticatedUser, updateProfile);
 router.route("/logout").get(isAuthenticatedUser, logoutUser);
 
 module.exports = router;
